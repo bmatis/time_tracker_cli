@@ -6,6 +6,7 @@ def main_loop():
     print("\nWelcome to Time Tracker\n")
 
     active = True
+    categories = ['Programming', 'Reading', 'Running', 'Cooking']
 
     while active:
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
@@ -14,7 +15,7 @@ def main_loop():
             active = False
         elif prompt == 'y':
             # Create a new timer.
-            timer = Timer()
+            timer = Timer(categories)
             timer.set_category()
 
             # Prompt for starting the timer.
