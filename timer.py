@@ -3,23 +3,13 @@ from datetime import datetime
 class Timer():
     """A class to represent a timer."""
 
-    def __init__(self, categories):
-        self.category = ""
-        self.categories = categories
+    def __init__(self):
         self.start_time = ""
         self.end_time = ""
         self.duration = ""
 
-    def set_category(self):
+    def set_category(self, category):
         """Set a category for the timer."""
-        print("What category is this timer for?")
-        i = 1
-        for category in self.categories:
-            print(str(i) + ". " + category)
-            i += 1
-        category = input("> ")
-        category = self.categories[int(category) - 1]
-
         self.category = category
         print("Time will be tracked for category: " + self.category)
 

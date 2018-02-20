@@ -1,12 +1,38 @@
 from timer import Timer
 
+def select_category():
+    """Ask the user to select a category from a given list."""
+
+    # Hardcoding a list of categories for now.
+    categories = ['Programming', 'Reading', 'Running', 'Cooking']
+
+    # Loop for asking user to select a valid option.
+    while True:
+        print("\nWhat category is this timer for?")
+        print_menu(categories)
+        category = input("> ")
+
+        try:
+            category = categories[int(category) - 1]
+            return category
+        except IndexError:
+            print("Please select a valid number.")
+        except ValueError:
+            print("Please select a valid number.")
+
+def print_menu(options):
+    """Prints a numbered list of menu options."""
+    i = 1
+    for option in options:
+        print(str(i) + ". " + option)
+        i += 1
+
 def main_loop():
     """Main application loop."""
 
     print("\nWelcome to Time Tracker\n")
 
     active = True
-    categories = ['Programming', 'Reading', 'Running', 'Cooking']
 
     while active:
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
@@ -15,8 +41,11 @@ def main_loop():
             active = False
         elif prompt == 'y':
             # Create a new timer.
-            timer = Timer(categories)
-            timer.set_category()
+            timer = Timer()
+
+            # Ask user for category to use and set timer to use it.
+            category = select_category()
+            timer.set_category(category)
 
             # Prompt for starting the timer.
             input("\nPress enter to start timer. ")
