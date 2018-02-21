@@ -1,4 +1,5 @@
 from timer import Timer
+from log import Log
 
 def select_category():
     """Ask the user to select a category from a given list."""
@@ -32,12 +33,18 @@ def main_loop():
 
     print("\nWelcome to Time Tracker\n")
 
+    # Create object for the ongoing logging of results.
+    log = Log()
+
+    # Flag for keeping the main application loop active until user quits.
     active = True
 
     while active:
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
 
         if prompt == 'n':
+            log.display()
+            print(log.get_category_time_sum('Programming'))
             active = False
         elif prompt == 'y':
             # Create a new timer.
@@ -55,6 +62,9 @@ def main_loop():
             input("\nPress enter to stop timer. ")
             timer.stop()
             timer.show_duration()
+
+            # Add timer results to the ongoing log.
+            log.add_to_log(timer)
         else:
             print("Invalid input. Please respond with 'y' or 'n'.")
 
