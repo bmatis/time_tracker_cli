@@ -16,9 +16,20 @@ class Log():
                  'category': timer.category}
         self.entries.append(entry)
 
-    def display(self):
+    def display(self, pretty=False):
         """Print the log to the terminal."""
-        print(self.entries)
+        print("\nLog:")
+        print("-" * 50)
+        if pretty == False:
+            print(self.entries)
+        elif pretty == True:
+            i = 1
+            for entry in self.entries:
+                print(str(i) + ". Start:    " + str(entry['start_time']) +
+                    "\n   End:      " + str(entry['end_time']) +
+                    "\n   Duration: " + str(entry['duration']) +
+                    "\n   Category: " + entry['category'] + "\n")
+                i += 1
 
     def get_category_time_sum(self, category):
         """Adds up the sum of all time for a given category."""

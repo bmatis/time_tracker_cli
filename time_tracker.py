@@ -43,7 +43,7 @@ def main_loop():
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
 
         if prompt == 'n':
-            log.display()
+            log.display(pretty=True)
             print(log.get_category_time_sum('Programming'))
             active = False
         elif prompt == 'y':
