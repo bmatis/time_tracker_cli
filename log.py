@@ -24,7 +24,7 @@ class Log():
         print("-" * 30)
 
         if self.entries == []:
-            print("Log is empty...\n")
+            print("Log is empty...")
 
         if pretty == False:
             print(self.entries)
@@ -34,7 +34,7 @@ class Log():
                 print(str(i) + ". Start:    " + str(entry['start_time']) +
                     "\n   End:      " + str(entry['end_time']) +
                     "\n   Duration: " + str(entry['duration']) +
-                    "\n   Category: " + entry['category'] + "\n")
+                    "\n   Category: " + entry['category'])
                 i += 1
 
     def get_category_time_sum(self, category):

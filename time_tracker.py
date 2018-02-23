@@ -3,42 +3,34 @@ import sys
 from timer import Timer
 from log import Log
 from settings import Settings
+import common_functions as cf
 
 def select_category(settings):
     """Ask the user to select a category from a given list."""
     # Loop for asking user to select a valid option.
     while True:
         print("\nWhat category is this timer for?")
-        print_menu(settings.categories)
-        category = input("> ")
+        cf.print_menu(settings.categories)
+        selection = input("> ")
 
         try:
-            category = settings.categories[int(category) - 1]
+            category = settings.categories[int(selection) - 1]
             return category
         except IndexError:
             print("Please select a valid number.")
         except ValueError:
             print("Please select a valid number.")
 
-def print_menu(options):
-    """Prints a numbered list of menu options."""
-    i = 1
-    for option in options:
-        print(str(i) + ". " + option)
-        i += 1
-
-def quit(log):
+def quit(log, settings):
     """Quit the program."""
 
-    # For testing reasons, display the log and also a total summary of all
-    # time spent on programming.
-    # log.display(pretty=True)
-    # print(log.get_category_time_sum('Programming'))
+    # Save categories to the file.
+    settings.save_categories()
 
     # Append all results to the log file.
     log.save_log()
 
-    # Make main loop inactive.
+    # Exit program.
     sys.exit()
 
 def run_timer(log, settings):
@@ -67,10 +59,8 @@ def main_loop():
 
     print("\nWelcome to Time Tracker\n")
 
-    # Create settings object.
+    # Create settings and log objects.
     settings = Settings()
-
-    # Create object for the ongoing logging of results.
     log = Log(settings)
 
     # Manu menu options
@@ -84,9 +74,8 @@ def main_loop():
     while True:
         print("Please choose an option below:")
         print("-" * 30)
-        print_menu(main_menu)
+        cf.print_menu(main_menu)
         prompt = input("> ")
-        # prompt = input("Would you like to start a new timer? (y/n) ").lower()
 
         if prompt == '1':
             # Start a new timer.
@@ -94,7 +83,7 @@ def main_loop():
         elif prompt == '2':
             # See current categories.
             print("\n")
-            print_menu(settings.categories)
+            cf.print_menu(settings.categories)
             input("\nPress enter to continue...")
             print("\n")
         elif prompt == '3':
@@ -105,10 +94,11 @@ def main_loop():
         elif prompt == '4':
             # View the log.
             log.display(pretty=True)
+            input("\nPress enter to continue...")
+            print("\n")
         elif prompt == '5':
-            # Save the categories and quit.
-            settings.save_categories()
-            quit(log)
+            # Save and quit.
+            quit(log, settings)
         else:
             print("Invalid input. Please respond with a valid menu option.")
 
