@@ -1,3 +1,5 @@
+import sys
+
 from timer import Timer
 from log import Log
 from settings import Settings
@@ -29,6 +31,20 @@ def print_menu(options):
         print(str(i) + ". " + option)
         i += 1
 
+def quit(log):
+    """Quit the program."""
+
+    # For testing reasons, display the log and also a total summary of all
+    # time spent on programming.
+    log.display(pretty=True)
+    print(log.get_category_time_sum('Programming'))
+
+    # Append all results to the log file.
+    log.save_log()
+
+    # Make main loop inactive.
+    sys.exit()
+
 def main_loop():
     """Main application loop."""
 
@@ -40,17 +56,11 @@ def main_loop():
     # Create object for the ongoing logging of results.
     log = Log(settings)
 
-    # Flag for keeping the main application loop active until user quits.
-    active = True
-
-    while active:
+    while True:
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
 
         if prompt == 'n':
-            log.display(pretty=True)
-            print(log.get_category_time_sum('Programming'))
-            log.save_log()
-            active = False
+            quit(log)
         elif prompt == 'y':
             # Create a new timer.
             timer = Timer()
