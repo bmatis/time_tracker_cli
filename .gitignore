@@ -2,3 +2,4 @@ __pycache__/
 .DS_Store
 log.txt
 log.csv
+categories.json

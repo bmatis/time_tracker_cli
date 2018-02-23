@@ -4,20 +4,16 @@ from timer import Timer
 from log import Log
 from settings import Settings
 
-def select_category():
+def select_category(settings):
     """Ask the user to select a category from a given list."""
-
-    # Hardcoding a list of categories for now.
-    categories = ['Programming', 'Reading', 'Running', 'Cooking']
-
     # Loop for asking user to select a valid option.
     while True:
         print("\nWhat category is this timer for?")
-        print_menu(categories)
+        print_menu(settings.categories)
         category = input("> ")
 
         try:
-            category = categories[int(category) - 1]
+            category = settings.categories[int(category) - 1]
             return category
         except IndexError:
             print("Please select a valid number.")
@@ -45,13 +41,13 @@ def quit(log):
     # Make main loop inactive.
     sys.exit()
 
-def run_timer(log):
+def run_timer(log, settings):
     """Run a timer."""
     # Create a new timer.
     timer = Timer()
 
     # Ask user for category to use and set timer to use it.
-    category = select_category()
+    category = select_category(settings)
     timer.set_category(category)
 
     # Prompt for starting the timer.
@@ -81,9 +77,10 @@ def main_loop():
         prompt = input("Would you like to start a new timer? (y/n) ").lower()
 
         if prompt == 'n':
+            settings.save_categories()
             quit(log)
         elif prompt == 'y':
-            run_timer(log)
+            run_timer(log, settings)
         else:
             print("Invalid input. Please respond with 'y' or 'n'.")
 
