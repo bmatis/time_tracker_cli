@@ -45,6 +45,27 @@ def quit(log):
     # Make main loop inactive.
     sys.exit()
 
+def run_timer(log):
+    """Run a timer."""
+    # Create a new timer.
+    timer = Timer()
+
+    # Ask user for category to use and set timer to use it.
+    category = select_category()
+    timer.set_category(category)
+
+    # Prompt for starting the timer.
+    input("\nPress enter to start timer. ")
+    timer.start()
+
+    # Prompt for stopping the timer.
+    input("\nPress enter to stop timer. ")
+    timer.stop()
+    timer.show_duration()
+
+    # Add timer results to the ongoing log.
+    log.add_to_log(timer)
+
 def main_loop():
     """Main application loop."""
 
@@ -62,24 +83,7 @@ def main_loop():
         if prompt == 'n':
             quit(log)
         elif prompt == 'y':
-            # Create a new timer.
-            timer = Timer()
-
-            # Ask user for category to use and set timer to use it.
-            category = select_category()
-            timer.set_category(category)
-
-            # Prompt for starting the timer.
-            input("\nPress enter to start timer. ")
-            timer.start()
-
-            # Prompt for stopping the timer.
-            input("\nPress enter to stop timer. ")
-            timer.stop()
-            timer.show_duration()
-
-            # Add timer results to the ongoing log.
-            log.add_to_log(timer)
+            run_timer(log)
         else:
             print("Invalid input. Please respond with 'y' or 'n'.")
 
