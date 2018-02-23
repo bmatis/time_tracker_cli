@@ -45,6 +45,7 @@ def main_loop():
         if prompt == 'n':
             log.display(pretty=True)
             print(log.get_category_time_sum('Programming'))
+            log.save_log()
             active = False
         elif prompt == 'y':
             # Create a new timer.

@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import timedelta
+import json
 
 class Log():
     """A class for modeling an ongoing log of results."""
@@ -38,3 +39,14 @@ class Log():
             if entry['category'] == category:
                 sum += entry['duration']
         return sum
+
+    def save_log(self):
+        """Save the log to a file."""
+        filename = 'log.csv'
+
+        with open(filename, 'a') as f:
+            for entry in self.entries:
+                f.write(str(entry['start_time']) + "," +
+                        str(entry['end_time']) + "," +
+                        str(entry['duration']) + "," +
+                        str(entry['category']) + "\n")
