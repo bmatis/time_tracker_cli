@@ -32,8 +32,8 @@ def quit(log):
 
     # For testing reasons, display the log and also a total summary of all
     # time spent on programming.
-    log.display(pretty=True)
-    print(log.get_category_time_sum('Programming'))
+    # log.display(pretty=True)
+    # print(log.get_category_time_sum('Programming'))
 
     # Append all results to the log file.
     log.save_log()
@@ -73,15 +73,43 @@ def main_loop():
     # Create object for the ongoing logging of results.
     log = Log(settings)
 
-    while True:
-        prompt = input("Would you like to start a new timer? (y/n) ").lower()
+    # Manu menu options
+    main_menu = [
+        "Start a new timer",
+        "See current categories",
+        "Add a new category",
+        "View timer logs",
+        "Quit"]
 
-        if prompt == 'n':
+    while True:
+        print("Please choose an option below:")
+        print("-" * 30)
+        print_menu(main_menu)
+        prompt = input("> ")
+        # prompt = input("Would you like to start a new timer? (y/n) ").lower()
+
+        if prompt == '1':
+            # Start a new timer.
+            run_timer(log, settings)
+        elif prompt == '2':
+            # See current categories.
+            print("\n")
+            print_menu(settings.categories)
+            input("\nPress enter to continue...")
+            print("\n")
+        elif prompt == '3':
+            # Add new category.
+            print("What category would you like to add?")
+            category = input("> ")
+            settings.add_a_category(category)
+        elif prompt == '4':
+            # View the log.
+            log.display(pretty=True)
+        elif prompt == '5':
+            # Save the categories and quit.
             settings.save_categories()
             quit(log)
-        elif prompt == 'y':
-            run_timer(log, settings)
         else:
-            print("Invalid input. Please respond with 'y' or 'n'.")
+            print("Invalid input. Please respond with a valid menu option.")
 
 main_loop()

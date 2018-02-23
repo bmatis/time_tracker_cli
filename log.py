@@ -21,7 +21,11 @@ class Log():
     def display(self, pretty=False):
         """Print the log to the terminal."""
         print("\nLog:")
-        print("-" * 50)
+        print("-" * 30)
+
+        if self.entries == []:
+            print("Log is empty...\n")
+
         if pretty == False:
             print(self.entries)
         elif pretty == True:

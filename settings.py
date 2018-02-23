@@ -21,3 +21,8 @@ class Settings():
         """Save the categories to a file."""
         with open(self.categories_file, 'w') as f:
             json.dump(self.categories, f)
+
+    def add_a_category(self, category):
+        """Add a category to the available options."""
+        self.categories.append(category)
+        print("Category '" + category + "' has been added.\n")
