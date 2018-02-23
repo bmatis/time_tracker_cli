@@ -1,5 +1,6 @@
 from timer import Timer
 from log import Log
+from settings import Settings
 
 def select_category():
     """Ask the user to select a category from a given list."""
@@ -33,8 +34,11 @@ def main_loop():
 
     print("\nWelcome to Time Tracker\n")
 
+    # Create settings object.
+    settings = Settings()
+
     # Create object for the ongoing logging of results.
-    log = Log()
+    log = Log(settings)
 
     # Flag for keeping the main application loop active until user quits.
     active = True

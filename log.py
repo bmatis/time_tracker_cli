@@ -5,9 +5,10 @@ import json
 class Log():
     """A class for modeling an ongoing log of results."""
 
-    def __init__(self):
+    def __init__(self, settings):
         """Initialize the log."""
         self.entries = []
+        self.log_file = settings.log_file
 
     def add_to_log(self, timer):
         """Add a timer's results to the ongoing log."""
@@ -42,9 +43,7 @@ class Log():
 
     def save_log(self):
         """Save the log to a file."""
-        filename = 'log.csv'
-
-        with open(filename, 'a') as f:
+        with open(self.log_file, 'a') as f:
             for entry in self.entries:
                 f.write(str(entry['start_time']) + "," +
                         str(entry['end_time']) + "," +
