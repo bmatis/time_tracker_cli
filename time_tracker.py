@@ -3,13 +3,14 @@ import sys
 from timer import Timer
 from log import Log
 from settings import Settings
+from goals import Goals
 import common_functions as cf
+
 
 def select_category(settings):
     """Ask the user to select a category from a given list."""
     # Loop for asking user to select a valid option.
     while True:
-        print("\nWhat category is this timer for?")
         cf.print_menu(settings.categories)
         selection = input("> ")
 
@@ -36,6 +37,7 @@ def run_timer(log, settings):
     timer = Timer()
 
     # Ask user for category to use and set timer to use it.
+    print("\nWhat category is this timer for?")
     category = select_category(settings)
     timer.set_category(category)
 
@@ -56,9 +58,10 @@ def main_loop():
 
     print("\nWelcome to Time Tracker\n")
 
-    # Create settings and log objects.
+    # Create settings, log, and goal objects.
     settings = Settings()
     log = Log(settings)
+    goals = Goals()
 
     # Manu menu options
     main_menu = [
@@ -66,6 +69,7 @@ def main_loop():
         "See current categories",
         "Add a new category",
         "View timer logs",
+        "Show goal progress",
         "Quit"]
 
     while True:
@@ -81,8 +85,7 @@ def main_loop():
             # See current categories.
             print("\n")
             cf.print_menu(settings.categories)
-            input("\nPress enter to continue...")
-            print("\n")
+            cf.press_enter_to_continue()
         elif prompt == '3':
             # Add new category.
             print("What category would you like to add?")
@@ -91,9 +94,17 @@ def main_loop():
         elif prompt == '4':
             # View the log.
             log.display(pretty=True)
-            input("\nPress enter to continue...")
-            print("\n")
+            cf.press_enter_to_continue()
         elif prompt == '5':
+            # Show the current progress towards programming goal.
+            # Is only for testing purposes now. In future, change
+            # to goal system.
+            print("What category would you like to see the progress for?")
+            category = select_category(settings)
+            goal_progress_percent = goals.progress(log, category)
+            print(category + ": %.2f percent" % goal_progress_percent)
+            cf.press_enter_to_continue()
+        elif prompt == '6':
             # Save and quit.
             quit(log, settings)
         else:

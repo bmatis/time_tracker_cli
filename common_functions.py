@@ -28,3 +28,8 @@ def convert_str_to_datetime(time_str):
     # Get a datetime object from parsing the time string.
     t = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S.%f")
     return t
+
+def press_enter_to_continue():
+    """Wait for the user to press enter to continue and tell them this."""
+    input("\nPress enter to continue...")
+    print("\n")
