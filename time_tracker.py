@@ -27,9 +27,6 @@ def quit(log, settings):
     # Save categories to the file.
     settings.save_categories()
 
-    # Append all results to the log file.
-    log.save_log()
-
     # Exit program.
     sys.exit()
 
