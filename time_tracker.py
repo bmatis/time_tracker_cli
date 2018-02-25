@@ -70,6 +70,7 @@ def main_loop():
         "Add a new category",
         "View timer logs",
         "Show goal progress",
+        "Status report",
         "Quit"]
 
     while True:
@@ -96,15 +97,21 @@ def main_loop():
             log.display(pretty=True)
             cf.press_enter_to_continue()
         elif prompt == '5':
-            # Show the current progress towards programming goal.
-            # Is only for testing purposes now. In future, change
-            # to goal system.
+            # Show the current progress towards a goal in a category.
             print("What category would you like to see the progress for?")
             category = select_category(settings)
             goal_progress_percent = goals.progress(log, category)
             print(category + ": %.2f percent" % goal_progress_percent)
+            goals.show_progress_bar(goal_progress_percent)
             cf.press_enter_to_continue()
         elif prompt == '6':
+            # Show status report: progress info for all categories.
+            for category in settings.categories:
+                goal_progress_percent = goals.progress(log, category)
+                print("\n" + category + ": %.2f percent" % goal_progress_percent)
+                goals.show_progress_bar(goal_progress_percent)
+            cf.press_enter_to_continue()
+        elif prompt == '7':
             # Save and quit.
             quit(log, settings)
         else:
