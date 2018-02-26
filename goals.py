@@ -27,3 +27,21 @@ class Goals():
 
         # Print out the progress bar.
         print("[" + "■" * progress_bar_width + "-" * empty_width + "]")
+
+    def show_detailed_progress(self, log, category):
+        """Show a detailed progress bar."""
+        # Get the percentage oompletion for the category.
+        goal_progress_percent = self.progress(log, category)
+
+        # Print the category and its percent completion.
+        print("\n" + category + ": %.2f%%" % goal_progress_percent)
+
+        # Generate and display the progress bar.
+        self.show_progress_bar(goal_progress_percent)
+
+        # Show detailed breakdown of current time spent on goal and the goal
+        # target time.
+        time_spent = log.get_category_time_sum(category)
+        time_spent_str = str(time_spent)
+        goal_time_str = str(self.target_time)
+        print(time_spent_str + " / " + goal_time_str)

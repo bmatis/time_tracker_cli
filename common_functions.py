@@ -54,3 +54,26 @@ def select_category(settings):
             print("Please select a valid number.")
         except ValueError:
             print("Please select a valid number.")
+
+def provide_date():
+    """Ask the user to provide a date and conver it to a datetime object."""
+    while True:
+        date = input("Provide the date in format YYYY-MM-DD: ")
+        try:
+            date = datetime.strptime(date, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("Invalid format, please try again.")
+    return date
+
+def provide_time():
+    """Ask the user to provide a time (H:MM) and convert to a timedelta object."""
+    while True:
+        time = input("Provide the time in format HH:MM: ")
+        try:
+            time = datetime.strptime(time, "%H:%M")
+            time = timedelta(hours=time.hour, minutes=time.minute)
+            break
+        except ValueError:
+            print("Invalid format, please try again.")
+    return time

@@ -88,16 +88,12 @@ def main_loop():
             # Show the current progress towards a goal in a category.
             print("Show progress for which category?")
             category = cf.select_category(settings)
-            goal_progress_percent = goals.progress(log, category)
-            print(category + ": %.2f percent" % goal_progress_percent)
-            goals.show_progress_bar(goal_progress_percent)
+            goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
         elif prompt == '7':
             # Show status report: progress info for all categories.
             for category in settings.categories:
-                goal_progress_percent = goals.progress(log, category)
-                print("\n" + category + ": %.2f percent" % goal_progress_percent)
-                goals.show_progress_bar(goal_progress_percent)
+                goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
         elif prompt == '8':
             # Save and quit.

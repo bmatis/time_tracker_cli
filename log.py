@@ -10,37 +10,54 @@ class Log():
     def __init__(self, settings):
         """Initialize the log."""
         self.entries = []
+        self.settings = settings
         self.log_file = settings.log_file
         self.get_log()
-        self.settings = settings
 
     def get_log(self):
         """Get the log entries from the saved log file."""
         with open(self.log_file) as f:
             reader = csv.reader(f)
             header_row = next(reader)
-            # print(header_row)
 
             for row in reader:
-                start_time = cf.convert_str_to_datetime(row[0])
-                if row[1] != "":
-                    end_time = cf.convert_str_to_datetime(row[1])
-                else:
-                    end_time = ""
-                duration = cf.convert_str_to_timedelta(row[2])
-                category = row[3]
-
-                entry = {'start_time': start_time, 'end_time': end_time,
-                         'duration': duration, 'category': category}
+                entry = self.get_log_entry(row)
                 self.entries.append(entry)
+
+    def get_log_entry(self, row):
+        """Parse details from a row in the saved log file."""
+        # Get the start time.
+        start_time = cf.convert_str_to_datetime(row[0])
+
+        # Get the end time. End time may be blank (for manual entries).
+        if row[1] != "":
+            end_time = cf.convert_str_to_datetime(row[1])
+        else:
+            end_time = ""
+
+        # Get the duration
+        duration = cf.convert_str_to_timedelta(row[2])
+
+        # Get the category
+        category = row[3]
+
+        # Create dictionary for the log entry and return it.
+        entry = self.create_entry(start_time, end_time, duration, category)
+        return entry
+
+    def create_entry(self, start_time, end_time, duration, category):
+        """Create a dictionary object for an entry."""
+        entry = {'start_time': start_time,
+                 'end_time': end_time,
+                 'duration': duration,
+                 'category': category}
+        return entry
 
     def add_to_log(self, timer):
         """Add a timer's results to the log."""
         # Get info from the timer and create a log entry dict.
-        entry = {'start_time': timer.start_time,
-                 'end_time': timer.end_time,
-                 'duration': timer.duration,
-                 'category': timer.category}
+        entry = self.create_entry(timer.start_time, timer.end_time,
+            timer.duration, timer.category)
 
         # Append the log entry to the local entries list.
         self.entries.append(entry)
@@ -60,21 +77,17 @@ class Log():
         print("What category is this log for? ")
         category = cf.select_category(self.settings)
 
-        while True:
-            date = input("Provide the date in format YYYY-MM-DD: ")
-            try:
-                date = datetime.strptime(date, "%Y-%m-%d")
-                break
-            except ValueError:
-                print("Invalid format, please try again.")
+        # Get the date for the entry. Use this as the start time.
+        start_time = cf.provide_date()
 
-        duration = input("Provide the duration in format HH:MM: ")
-        duration = datetime.strptime(duration, "%H:%M")
-        duration = timedelta(hours=duration.hour, minutes=duration.minute)
-        entry = {'start_time': date,
-                 'end_time': "",
-                 'duration': duration,
-                 'category': category}
+        # Have a blank end time, since we aren't really tracking a timer.
+        end_time = ""
+
+        # Get the duration for the entry.
+        duration = cf.provide_time()
+
+        entry = self.create_entry(start_time, end_time, duration, category)
+
         self.entries.append(entry)
         self.save_entry(entry)
 
