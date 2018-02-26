@@ -6,7 +6,7 @@ class Goals():
     def __init__(self):
         # Hardcoding some values for now. Will eventually read these from
         # a save file.
-        self.target_time = timedelta(hours=5)
+        self.target_time = timedelta(hours=100)
 
     def progress(self, log, category):
         """Calculate and return the given categor's current goal progress."""

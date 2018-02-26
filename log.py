@@ -12,17 +12,21 @@ class Log():
         self.entries = []
         self.log_file = settings.log_file
         self.get_log()
+        self.settings = settings
 
     def get_log(self):
         """Get the log entries from the saved log file."""
         with open(self.log_file) as f:
             reader = csv.reader(f)
             header_row = next(reader)
-            print(header_row)
+            # print(header_row)
 
             for row in reader:
                 start_time = cf.convert_str_to_datetime(row[0])
-                end_time = cf.convert_str_to_datetime(row[1])
+                if row[1] != "":
+                    end_time = cf.convert_str_to_datetime(row[1])
+                else:
+                    end_time = ""
                 duration = cf.convert_str_to_timedelta(row[2])
                 category = row[3]
 
@@ -51,6 +55,28 @@ class Log():
                     str(entry['end_time']) + "," +
                     str(entry['duration']) + "," +
                     str(entry['category']) + "\n")
+
+    def manual_entry(self):
+        print("What category is this log for? ")
+        category = cf.select_category(self.settings)
+
+        while True:
+            date = input("Provide the date in format YYYY-MM-DD: ")
+            try:
+                date = datetime.strptime(date, "%Y-%m-%d")
+                break
+            except ValueError:
+                print("Invalid format, please try again.")
+
+        duration = input("Provide the duration in format HH:MM: ")
+        duration = datetime.strptime(duration, "%H:%M")
+        duration = timedelta(hours=duration.hour, minutes=duration.minute)
+        entry = {'start_time': date,
+                 'end_time': "",
+                 'duration': duration,
+                 'category': category}
+        self.entries.append(entry)
+        self.save_entry(entry)
 
     def display(self, pretty=False):
         """Print the log to the terminal."""

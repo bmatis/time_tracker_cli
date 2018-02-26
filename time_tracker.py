@@ -6,22 +6,6 @@ from settings import Settings
 from goals import Goals
 import common_functions as cf
 
-
-def select_category(settings):
-    """Ask the user to select a category from a given list."""
-    # Loop for asking user to select a valid option.
-    while True:
-        cf.print_menu(settings.categories)
-        selection = input("> ")
-
-        try:
-            category = settings.categories[int(selection) - 1]
-            return category
-        except IndexError:
-            print("Please select a valid number.")
-        except ValueError:
-            print("Please select a valid number.")
-
 def quit(log, settings):
     """Quit the program."""
 
@@ -38,7 +22,7 @@ def run_timer(log, settings):
 
     # Ask user for category to use and set timer to use it.
     print("\nWhat category is this timer for?")
-    category = select_category(settings)
+    category = cf.select_category(settings)
     timer.set_category(category)
 
     # Prompt for starting the timer.
@@ -66,6 +50,7 @@ def main_loop():
     # Manu menu options
     main_menu = [
         "Start a new timer",
+        "Manually enter a new record",
         "See current categories",
         "Add a new category",
         "View timer logs",
@@ -83,35 +68,38 @@ def main_loop():
             # Start a new timer.
             run_timer(log, settings)
         elif prompt == '2':
+            # Manually enter a new record
+            log.manual_entry()
+        elif prompt == '3':
             # See current categories.
             print("\n")
             cf.print_menu(settings.categories)
             cf.press_enter_to_continue()
-        elif prompt == '3':
+        elif prompt == '4':
             # Add new category.
             print("What category would you like to add?")
             category = input("> ")
             settings.add_a_category(category)
-        elif prompt == '4':
+        elif prompt == '5':
             # View the log.
             log.display(pretty=True)
             cf.press_enter_to_continue()
-        elif prompt == '5':
+        elif prompt == '6':
             # Show the current progress towards a goal in a category.
-            print("What category would you like to see the progress for?")
-            category = select_category(settings)
+            print("Show progress for which category?")
+            category = cf.select_category(settings)
             goal_progress_percent = goals.progress(log, category)
             print(category + ": %.2f percent" % goal_progress_percent)
             goals.show_progress_bar(goal_progress_percent)
             cf.press_enter_to_continue()
-        elif prompt == '6':
+        elif prompt == '7':
             # Show status report: progress info for all categories.
             for category in settings.categories:
                 goal_progress_percent = goals.progress(log, category)
                 print("\n" + category + ": %.2f percent" % goal_progress_percent)
                 goals.show_progress_bar(goal_progress_percent)
             cf.press_enter_to_continue()
-        elif prompt == '7':
+        elif prompt == '8':
             # Save and quit.
             quit(log, settings)
         else:
