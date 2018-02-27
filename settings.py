@@ -24,5 +24,11 @@ class Settings():
 
     def add_a_category(self, category):
         """Add a category to the available options."""
-        self.categories.append(category)
-        print("Category '" + category + "' has been added.\n")
+
+        # Check if category already exists. Convert everything to lower
+        # case to be case insensitive.
+        if category.lower() not in (c.lower() for c in self.categories):
+            self.categories.append(category)
+            print("Category '" + category + "' has been added.\n")
+        else:
+            print("Category '" + category + "' already exists.\n")
