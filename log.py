@@ -74,7 +74,7 @@ class Log():
                     str(entry['category']) + "\n")
 
     def manual_entry(self):
-        print("What category is this log for? ")
+        print("\nWhat category is this log for? ")
         category = cf.select_category(self.settings)
 
         # Get the date for the entry. Use this as the start time.
@@ -116,6 +116,13 @@ class Log():
         for entry in self.entries:
             if entry['category'] == category:
                 sum += entry['duration']
+        return sum
+
+    def get_total_time_sum(self):
+        """Adds up the sum of all time for everything in log."""
+        sum = timedelta(0)
+        for entry in self.entries:
+            sum += entry['duration']
         return sum
 
     def save_log(self):

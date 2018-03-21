@@ -45,3 +45,23 @@ class Goals():
         time_spent_str = str(time_spent)
         goal_time_str = str(self.target_time)
         print(time_spent_str + " / " + goal_time_str)
+
+    def show_percent_of_total(self, log, category):
+        """
+        Show a detailed percentage bar for time in category compared to all time.
+        """
+        category_time = log.get_category_time_sum(category)
+        total_time = log.get_total_time_sum()
+        progress_percent = category_time / total_time * 100
+
+        # Print the category and its percent completion.
+        print("\n" + category + ": %.2f%%" % progress_percent)
+
+        # Generate and display the progress bar.
+        self.show_progress_bar(progress_percent)
+
+        # Show detailed breakdown of current time spent on goal and the goal
+        # target time.
+        time_spent_str = str(category_time)
+        total_time_str = str(total_time)
+        print(time_spent_str + " / " + total_time_str)

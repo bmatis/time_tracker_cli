@@ -60,6 +60,7 @@ def main_loop():
         "View timer logs",
         "Show goal progress",
         "Status report",
+        "Category breakdown",
         "Quit"]
 
     while True:
@@ -74,6 +75,7 @@ def main_loop():
         elif prompt == '2':
             # Manually enter a new record
             log.manual_entry()
+            cf.press_enter_to_continue()
         elif prompt == '3':
             # See current categories.
             print("\n")
@@ -100,6 +102,11 @@ def main_loop():
                 goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
         elif prompt == '8':
+            # Show category breakdown: time spent as % of total.
+            for category in settings.categories:
+                goals.show_percent_of_total(log, category)
+            cf.press_enter_to_continue()
+        elif prompt == '9':
             # Save and quit.
             quit(log, settings)
         else:
