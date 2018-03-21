@@ -15,7 +15,7 @@ def quit(log, settings):
     # Exit program.
     sys.exit()
 
-def run_timer(log, settings):
+def run_timer(log, settings, goals):
     """Run a timer."""
     # Create a new timer.
     timer = Timer()
@@ -36,6 +36,10 @@ def run_timer(log, settings):
 
     # Add timer results to the ongoing log.
     log.add_to_log(timer)
+
+    # Show the current progress for the category.
+    goals.show_detailed_progress(log, category)
+    cf.press_enter_to_continue()
 
 def main_loop():
     """Main application loop."""
@@ -66,7 +70,7 @@ def main_loop():
 
         if prompt == '1':
             # Start a new timer.
-            run_timer(log, settings)
+            run_timer(log, settings, goals)
         elif prompt == '2':
             # Manually enter a new record
             log.manual_entry()

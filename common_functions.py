@@ -56,7 +56,7 @@ def select_category(settings):
             print("Please select a valid number.")
 
 def provide_date():
-    """Ask the user to provide a date and conver it to a datetime object."""
+    """Ask the user to provide a date and convert it to a datetime object."""
     while True:
         date = input("Provide the date in format YYYY-MM-DD: ")
         try:
