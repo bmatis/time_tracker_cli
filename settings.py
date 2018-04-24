@@ -14,8 +14,26 @@ class Settings():
 
     def get_categories(self):
         """Get the saved categories from a file."""
-        with open(self.categories_file) as f:
-            self.categories = json.load(f)
+        try:
+            with open(self.categories_file) as f:
+                self.categories = json.load(f)
+        except FileNotFoundError:
+            self.categories = []
+            self.initialize_categories()
+
+    def initialize_categories(self):
+        """Create categories save file and ask user to make their first one."""
+        print("Looks like this is your first time using Time Tracker.")
+        print("To get started, please create the first category you'd like to track.")
+        print("Examples: Cooking, Programming, Knife Throwing...")
+        while True:
+            category = input("> ")
+            if category == "":
+                print("Invalid category, please try again...\n")
+            else:
+                break
+
+        self.add_a_category(category)
 
     def save_categories(self):
         """Save the categories to a file."""
