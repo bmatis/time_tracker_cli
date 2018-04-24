@@ -43,7 +43,10 @@ class Goals():
 
     def draw_progress_display(self, category, progress_time, end_time,
         width=52):
-        progress_percent = progress_time / end_time * 100
+        try:
+            progress_percent = progress_time / end_time * 100
+        except ZeroDivisionError:
+            progress_percent = 0
 
         # Print the category and its percent completion.
         print("\n" + category + ": %.2f%%" % progress_percent)
