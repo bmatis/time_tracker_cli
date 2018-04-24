@@ -83,8 +83,7 @@ def main_loop():
             cf.press_enter_to_continue()
         elif prompt == '4':
             # Add new category.
-            print("What category would you like to add?")
-            category = input("> ")
+            category = settings.ask_user_for_category()
             settings.add_a_category(category)
         elif prompt == '5':
             # View the log.

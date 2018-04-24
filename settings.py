@@ -25,15 +25,22 @@ class Settings():
         """Create categories save file and ask user to make their first one."""
         print("Looks like this is your first time using Time Tracker.")
         print("To get started, please create the first category you'd like to track.")
-        print("Examples: Cooking, Programming, Knife Throwing...")
+        print("Examples: Cooking, Programming, Knife Throwing...\n\n")
+
+        category = self.ask_user_for_category()
+        self.add_a_category(category)
+
+    def ask_user_for_category(self):
+        """
+        Ask user for a category. Provide error and try again if left blank.
+        """
+        print("What category would you like to add?")
         while True:
             category = input("> ")
             if category == "":
                 print("Invalid category, please try again...\n")
             else:
-                break
-
-        self.add_a_category(category)
+                return category
 
     def save_categories(self):
         """Save the categories to a file."""
