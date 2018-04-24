@@ -64,50 +64,58 @@ def main_loop():
         "Quit"]
 
     while True:
-        print("Please choose an option below:")
-        print("-" * 30)
-        cf.print_menu(main_menu)
+        header = "Please choose an option:"
+        cf.print_menu(main_menu, header)
         prompt = input("> ")
 
         if prompt == '1':
             # Start a new timer.
             run_timer(log, settings, goals)
+
         elif prompt == '2':
             # Manually enter a new record
             log.manual_entry()
             cf.press_enter_to_continue()
+
         elif prompt == '3':
             # See current categories.
             print("\n")
-            cf.print_menu(settings.categories)
+            cf.print_menu(settings.categories, "Categories:")
             cf.press_enter_to_continue()
+
         elif prompt == '4':
             # Add new category.
             category = settings.ask_user_for_category()
             settings.add_a_category(category)
+
         elif prompt == '5':
             # View the log.
             log.display(pretty=True)
             cf.press_enter_to_continue()
+
         elif prompt == '6':
             # Show the current progress towards a goal in a category.
             print("Show progress for which category?")
             category = cf.select_category(settings)
             goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
+
         elif prompt == '7':
             # Show status report: progress info for all categories.
             for category in settings.categories:
                 goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
+
         elif prompt == '8':
             # Show category breakdown: time spent as % of total.
             for category in settings.categories:
                 goals.show_percent_of_total(log, category)
             cf.press_enter_to_continue()
+
         elif prompt == '9':
             # Save and quit.
             quit(log, settings)
+
         else:
             print("Invalid input. Please respond with a valid menu option.")
 

@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 
-def print_menu(options):
+def print_menu(options, header=""):
     """Prints a numbered list of menu options."""
+    if header != "":
+        print(header)
+        print("-" * len(header))
     i = 1
     for option in options:
         print(str(i) + ". " + option)
