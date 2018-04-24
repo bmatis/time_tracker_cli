@@ -140,8 +140,10 @@ class Log():
     def get_total_time_sum(self):
         """Adds up the sum of all time for everything in log."""
         sum = timedelta(0)
-        for entry in self.entries:
-            sum += entry['duration']
+        # for entry in self.entries:
+        #     sum += entry['duration']
+        for category in self.settings.categories:
+            sum += self.get_category_time_sum(category)
         return sum
 
     def save_log(self):
