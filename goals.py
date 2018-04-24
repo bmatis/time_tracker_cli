@@ -8,12 +8,6 @@ class Goals():
         # a save file.
         self.target_time = timedelta(hours=100)
 
-    def progress(self, log, category):
-        """Calculate and return the given categor's current goal progress."""
-        current_time = log.get_category_time_sum(category)
-        progress_percent = current_time / self.target_time * 100
-        return progress_percent
-
     def show_progress_bar(self, progress_percent, total_width=50):
         # Calculate the filled-in portion of the progress bar.
         progress_bar_width = round(progress_percent / 100 * total_width)
@@ -29,30 +23,25 @@ class Goals():
         print("[" + "■" * progress_bar_width + "-" * empty_width + "]")
 
     def show_detailed_progress(self, log, category):
-        """Show a detailed progress bar."""
-        # Get the percentage oompletion for the category.
-        goal_progress_percent = self.progress(log, category)
-
-        # Print the category and its percent completion.
-        print("\n" + category + ": %.2f%%" % goal_progress_percent)
-
-        # Generate and display the progress bar.
-        self.show_progress_bar(goal_progress_percent)
-
-        # Show detailed breakdown of current time spent on goal and the goal
-        # target time.
+        """
+        Show a detailed progress bar for a given category's progress towards
+        its goal.
+        """
         time_spent = log.get_category_time_sum(category)
-        time_spent_str = str(time_spent)
-        goal_time_str = str(self.target_time)
-        print(time_spent_str + " / " + goal_time_str)
+        goal_time = self.target_time
+        self.draw_progress_display(category, time_spent, goal_time)
 
     def show_percent_of_total(self, log, category):
         """
-        Show a detailed percentage bar for time in category compared to all time.
+        Show a detailed percentage bar for time in category compared to
+        total of all time tracked.
         """
         category_time = log.get_category_time_sum(category)
         total_time = log.get_total_time_sum()
-        progress_percent = category_time / total_time * 100
+        self.draw_progress_display(category, category_time, total_time)
+
+    def draw_progress_display(self, category, progress_time, end_time):
+        progress_percent = progress_time / end_time * 100
 
         # Print the category and its percent completion.
         print("\n" + category + ": %.2f%%" % progress_percent)
@@ -60,8 +49,19 @@ class Goals():
         # Generate and display the progress bar.
         self.show_progress_bar(progress_percent)
 
-        # Show detailed breakdown of current time spent on goal and the goal
-        # target time.
-        time_spent_str = str(category_time)
-        total_time_str = str(total_time)
+        # Show detailed breakdown of current time spent on goal and the
+        # total time.
+        time_spent_str = self.formatted_time(progress_time)
+        total_time_str = self.formatted_time(end_time)
         print(time_spent_str + " / " + total_time_str)
+
+    def formatted_time(self, time):
+        """
+        Present a timedelta in the format of "X hours Y minutes"
+        """
+        time_hours = int(time.total_seconds() // 3600)
+        time_minutes = int(time.total_seconds() // 60 % 60)
+        time_str = str(time_hours) + " hours"
+        if time_minutes != 0:
+            time_str += " " + str(time_minutes) + " minutes"
+        return time_str
