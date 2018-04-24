@@ -1,6 +1,6 @@
 __pycache__/
 .DS_Store
 log.txt
-log.csv
+*.csv
 categories.json
 *.pyc

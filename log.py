@@ -16,13 +16,22 @@ class Log():
 
     def get_log(self):
         """Get the log entries from the saved log file."""
-        with open(self.log_file) as f:
-            reader = csv.reader(f)
-            header_row = next(reader)
+        try:
+            with open(self.log_file) as f:
+                reader = csv.reader(f)
+                header_row = next(reader)
 
-            for row in reader:
-                entry = self.get_log_entry(row)
-                self.entries.append(entry)
+                for row in reader:
+                    entry = self.get_log_entry(row)
+                    self.entries.append(entry)
+        except FileNotFoundError:
+            # print("No log... Making a new one...\n")
+            self.initialize_log()
+
+    def initialize_log(self):
+        """Create a new empty log file."""
+        with open(self.log_file, 'w') as f:
+            f.write("Start,End,Duration,Category\n")
 
     def get_log_entry(self, row):
         """Parse details from a row in the saved log file."""
