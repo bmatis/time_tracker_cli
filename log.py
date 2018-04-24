@@ -111,12 +111,22 @@ class Log():
         if pretty == False:
             print(self.entries)
         elif pretty == True:
+            # Get the total count of entries and figure out the character length
+            # of that number so we can leave the right amount of padding for it.
+            entry_count = len(self.entries)
+            padding = len(str(entry_count)) + 2
+
             i = 1
             for entry in self.entries:
-                print(str(i) + ". Start:    " + str(entry['start_time']) +
-                    "\n   End:      " + str(entry['end_time']) +
-                    "\n   Duration: " + str(entry['duration']) +
-                    "\n   Category: " + entry['category'])
+                index_str = (str(i) + ".").ljust(padding)
+                print(index_str + "Start:".ljust(10) +
+                    str(entry['start_time']))
+                print(" " * padding + "End:".ljust(10) +
+                    str(entry['end_time']))
+                print(" " * padding + "Duration:".ljust(10) +
+                    str(entry['duration']))
+                print(" " * padding + "Category:".ljust(10) +
+                    str(entry['category']) + '\n')
                 i += 1
 
     def get_category_time_sum(self, category):
