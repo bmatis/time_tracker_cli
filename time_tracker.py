@@ -74,7 +74,7 @@ def main_loop():
 
         elif prompt == '2':
             # Manually enter a new record
-            log.manual_entry()
+            log.manual_entry(goals)
             cf.press_enter_to_continue()
 
         elif prompt == '3':

@@ -82,7 +82,7 @@ class Log():
                     str(entry['duration']) + "," +
                     str(entry['category']) + "\n")
 
-    def manual_entry(self):
+    def manual_entry(self, goals):
         print("\nWhat category is this log for? ")
         category = cf.select_category(self.settings)
 
@@ -99,6 +99,9 @@ class Log():
 
         self.entries.append(entry)
         self.save_entry(entry)
+
+        print("\nAdded " + str(duration) + " to category: " + category)
+        goals.show_detailed_progress(self, category)
 
     def display(self, pretty=False):
         """Print the log to the terminal."""
