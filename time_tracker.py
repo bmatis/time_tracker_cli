@@ -43,6 +43,37 @@ def run_timer(log, settings, goals):
     goals.show_detailed_progress(log, category)
     cf.press_enter_to_continue()
 
+def category_menu(settings):
+    """Display menu for handling category related features."""
+    menu = ["See current categories",
+            "Add a new category",
+            "Back to main menu",
+            ]
+
+    while True:
+        print()
+        header = "Category Manager | Please type a number:"
+        cf.print_menu(menu, header)
+        prompt = input("> ")
+
+        if prompt == '1':
+            # See current categories.
+            print("\n")
+            cf.print_menu(settings.categories, "Categories:")
+            cf.press_enter_to_continue()
+
+        elif prompt == '2':
+            # Add new category.
+            category = settings.ask_user_for_category()
+            settings.add_a_category(category)
+
+        elif prompt == '3':
+            break
+
+        else:
+            print("Invalid input. Please respond with a valid menu option.")
+
+
 def main_loop():
     """Main application loop."""
 
@@ -57,8 +88,7 @@ def main_loop():
     main_menu = [
         "Start a new timer",
         "Manually enter a new record",
-        "See current categories",
-        "Add a new category",
+        "Manage categories",
         "View timer logs",
         "Show goal progress",
         "Status report",
@@ -66,7 +96,8 @@ def main_loop():
         "Quit"]
 
     while True:
-        header = "Please choose an option:"
+        print()
+        header = "Main Menu | Please type a number:"
         cf.print_menu(main_menu, header)
         prompt = input("> ")
 
@@ -80,41 +111,34 @@ def main_loop():
             cf.press_enter_to_continue()
 
         elif prompt == '3':
-            # See current categories.
-            print("\n")
-            cf.print_menu(settings.categories, "Categories:")
-            cf.press_enter_to_continue()
+            # Go to category submenu.
+            category_menu(settings)
 
         elif prompt == '4':
-            # Add new category.
-            category = settings.ask_user_for_category()
-            settings.add_a_category(category)
-
-        elif prompt == '5':
             # View the log.
             log.display(pretty=True)
             cf.press_enter_to_continue()
 
-        elif prompt == '6':
+        elif prompt == '5':
             # Show the current progress towards a goal in a category.
-            print("Show progress for which category?")
+            print("\nShow progress for which category?")
             category = cf.select_category(settings)
             goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
 
-        elif prompt == '7':
+        elif prompt == '6':
             # Show status report: progress info for all categories.
             for category in settings.categories:
                 goals.show_detailed_progress(log, category)
             cf.press_enter_to_continue()
 
-        elif prompt == '8':
+        elif prompt == '7':
             # Show category breakdown: time spent as % of total.
             for category in settings.categories:
                 goals.show_percent_of_total(log, category)
             cf.press_enter_to_continue()
 
-        elif prompt == '9':
+        elif prompt == '8':
             # Save and quit.
             quit(log, settings)
 
