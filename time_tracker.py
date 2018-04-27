@@ -24,29 +24,41 @@ def run_timer(log, settings, goals):
 
     # Ask user for category to use and set timer to use it.
     print("\nWhat category is this timer for?")
+    print("Select a number or 'c' to cancel.")
     category = cf.select_category(settings)
-    timer.set_category(category)
+    if category:
+        timer.set_category(category)
 
-    # Prompt for starting the timer.
-    input("\nPress enter to start timer. ")
-    timer.start()
+        # Prompt for starting the timer.
+        response = input("\nPress enter to start timer, or 'c' to cancel. ")
+        if response == 'c':
+            print("Ok, timer cancelled.")
+            return
+        timer.start()
 
-    # Prompt for stopping the timer.
-    input("\nPress enter to stop timer. ")
-    timer.stop()
-    timer.show_duration()
+        # Prompt for stopping the timer.
+        response = input("\nPress enter to stop timer, or 'c' to cancel. ")
+        if response == 'c':
+            print("Ok, timer cancelled.")
+            return
+        timer.stop()
+        timer.show_duration()
 
-    # Add timer results to the ongoing log.
-    log.add_to_log(timer)
+        # Add timer results to the ongoing log.
+        log.add_to_log(timer)
 
-    # Show the current progress for the category.
-    goals.show_detailed_progress(log, category)
-    cf.press_enter_to_continue()
+        # Show the current progress for the category.
+        goals.show_detailed_progress(log, category)
+        cf.press_enter_to_continue()
+    else:
+        print("Ok, timer cancelled.")
+        return
 
 def category_menu(settings):
     """Display menu for handling category related features."""
     menu = ["See current categories",
             "Add a new category",
+            "Delete a category",
             "Back to main menu",
             ]
 
@@ -68,6 +80,16 @@ def category_menu(settings):
             settings.add_a_category(category)
 
         elif prompt == '3':
+            # Delete a category.
+            print("\nWhich category do you want to delete?")
+            print("Please type a number or 'c' to cancel.")
+            category = cf.select_category(settings)
+            if category:
+                settings.delete_category(category)
+            else:
+                print("Ok, cancelled.")
+
+        elif prompt == '4':
             break
 
         else:
@@ -83,8 +105,11 @@ def view_log(log, settings):
     print(header + "\n" + "-" * len(header))
     category = cf.select_category(settings, allow_all=True)
 
-    log.display(category=category, pretty=True)
-    cf.press_enter_to_continue()
+    if category:
+        log.display(category=category, pretty=True)
+        cf.press_enter_to_continue()
+    else:
+        return
 
 def main_loop():
     """Main application loop."""
@@ -134,8 +159,11 @@ def main_loop():
             # Show the current progress towards a goal in a category.
             print("\nShow progress for which category?")
             category = cf.select_category(settings)
-            goals.show_detailed_progress(log, category)
-            cf.press_enter_to_continue()
+            if category:
+                goals.show_detailed_progress(log, category)
+                cf.press_enter_to_continue()
+            else:
+                pass
 
         elif prompt == '6':
             # Show status report: progress info for all categories.

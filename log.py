@@ -86,22 +86,25 @@ class Log():
         print("\nWhat category is this log for? ")
         category = cf.select_category(self.settings)
 
-        # Get the date for the entry. Use this as the start time.
-        start_time = cf.provide_date()
+        if category:
+            # Get the date for the entry. Use this as the start time.
+            start_time = cf.provide_date()
 
-        # Have a blank end time, since we aren't really tracking a timer.
-        end_time = ""
+            # Have a blank end time, since we aren't really tracking a timer.
+            end_time = ""
 
-        # Get the duration for the entry.
-        duration = cf.provide_time()
+            # Get the duration for the entry.
+            duration = cf.provide_time()
 
-        entry = self.create_entry(start_time, end_time, duration, category)
+            entry = self.create_entry(start_time, end_time, duration, category)
 
-        self.entries.append(entry)
-        self.save_entry(entry)
+            self.entries.append(entry)
+            self.save_entry(entry)
 
-        print("\nAdded " + str(duration) + " to category: " + category)
-        goals.show_detailed_progress(self, category)
+            print("\nAdded " + str(duration) + " to category: " + category)
+            goals.show_detailed_progress(self, category)
+        else:
+            print("Ok, cancelling.")
 
     def display(self, category='All', pretty=False):
         """Print the log to the terminal."""

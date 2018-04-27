@@ -57,3 +57,22 @@ class Settings():
             print("Category '" + category + "' has been added.\n")
         else:
             print("Category '" + category + "' already exists.\n")
+
+    def delete_category(self, category):
+        """Delete a category from the list."""
+        if category in self.categories:
+            print("Please confirm that you wish to delete category: " +
+                category + " (y/n)")
+            while True:
+                confirm = input("> ")
+                if confirm.lower() == 'y':
+                    self.categories.remove(category)
+                    print("Category: " + category + " has been removed.\n")
+                    break
+                elif confirm.lower() == 'n':
+                    print("Ok, leaving it alone.\n")
+                    break
+                else:
+                    print("Please provide a valid y/n response.")
+        else:
+            print("Error: that category is not available...")

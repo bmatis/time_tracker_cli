@@ -59,6 +59,10 @@ def select_category(settings, allow_all=False):
         print_menu(categories)
         selection = input("> ")
 
+        # If user enters 'c', cancels the selection.
+        if selection.lower() == 'c':
+            return False
+
         # Check if user provided a valid response.
         # Provide error and try again if not.
         try:
