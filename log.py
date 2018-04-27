@@ -135,7 +135,7 @@ class Log():
                 i += 1
 
     def display_entry(self, entry, index, padding):
-        index_str = (str(index) + ".").ljust(padding)
+        index_str = (str(index) + ". ").rjust(padding)
         print(index_str + "Start:".ljust(10) +
             str(entry['start_time']))
         print(" " * padding + "End:".ljust(10) +
