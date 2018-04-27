@@ -103,34 +103,47 @@ class Log():
         print("\nAdded " + str(duration) + " to category: " + category)
         goals.show_detailed_progress(self, category)
 
-    def display(self, pretty=False):
+    def display(self, category='All', pretty=False):
         """Print the log to the terminal."""
-        print("\nLog:")
-        print("-" * 30)
+        header = "Log | " + category
+        print("\n" + header)
+        print("-" * len(header))
 
-        if self.entries == []:
-            print("Log is empty...")
+        # Filter the entries based on the category provided.
+        entries = []
+        if category == 'All':
+            entries = self.entries
+        else:
+            for entry in self.entries:
+                if entry['category'] == category:
+                    entries.append(entry)
+
+        # Get the total count of entries and figure out the character length
+        # of that number so we can leave the right amount of padding for it.
+        entry_count = len(entries)
+        padding = len(str(entry_count)) + 2
+
+        if entries == []:
+            print("Log is empty for category " + category + "...")
 
         if pretty == False:
-            print(self.entries)
+            print(entries)
         elif pretty == True:
-            # Get the total count of entries and figure out the character length
-            # of that number so we can leave the right amount of padding for it.
-            entry_count = len(self.entries)
-            padding = len(str(entry_count)) + 2
-
             i = 1
-            for entry in self.entries:
-                index_str = (str(i) + ".").ljust(padding)
-                print(index_str + "Start:".ljust(10) +
-                    str(entry['start_time']))
-                print(" " * padding + "End:".ljust(10) +
-                    str(entry['end_time']))
-                print(" " * padding + "Duration:".ljust(10) +
-                    str(entry['duration']))
-                print(" " * padding + "Category:".ljust(10) +
-                    str(entry['category']) + '\n')
+            for entry in entries:
+                self.display_entry(entry, i, padding)
                 i += 1
+
+    def display_entry(self, entry, index, padding):
+        index_str = (str(index) + ".").ljust(padding)
+        print(index_str + "Start:".ljust(10) +
+            str(entry['start_time']))
+        print(" " * padding + "End:".ljust(10) +
+            str(entry['end_time']))
+        print(" " * padding + "Duration:".ljust(10) +
+            str(entry['duration']))
+        print(" " * padding + "Category:".ljust(10) +
+            str(entry['category']) + '\n')
 
     def get_category_time_sum(self, category):
         """Adds up the sum of all time for a given category."""

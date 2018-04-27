@@ -43,20 +43,33 @@ def press_enter_to_continue():
     input("\nPress enter to continue...")
     print("\n")
 
-def select_category(settings):
+def select_category(settings, allow_all=False):
     """Ask the user to select a category from a given list."""
-    # Loop for asking user to select a valid option.
+
     while True:
-        print_menu(settings.categories)
+        # Make a copy of the categories list so we can display it without
+        # modifying it accidentally.
+        categories = settings.categories[:]
+
+        # Add an 'all' option if requested.
+        if allow_all == True:
+            categories.append("All")
+
+        # Print the menu and wait for user response.
+        print_menu(categories)
         selection = input("> ")
 
+        # Check if user provided a valid response.
+        # Provide error and try again if not.
         try:
-            category = settings.categories[int(selection) - 1]
+            # Subtract one from user provided number, since menu starts at 1,
+            # but the list index starts at 0.
+            category = categories[int(selection) - 1]
             return category
         except IndexError:
-            print("Please select a valid number.")
+            print("Please select a valid number.\n")
         except ValueError:
-            print("Please select a valid number.")
+            print("Please select a valid number.\n")
 
 def provide_date():
     """Ask the user to provide a date and convert it to a datetime object."""

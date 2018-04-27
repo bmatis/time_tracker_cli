@@ -73,6 +73,18 @@ def category_menu(settings):
         else:
             print("Invalid input. Please respond with a valid menu option.")
 
+def view_log(log, settings):
+    """
+    Allow user to view the logs. Can select a specific category, or choose
+    to show all of them.
+    """
+    print()
+    header = "Show logs for which category?"
+    print(header + "\n" + "-" * len(header))
+    category = cf.select_category(settings, allow_all=True)
+
+    log.display(category=category, pretty=True)
+    cf.press_enter_to_continue()
 
 def main_loop():
     """Main application loop."""
@@ -116,8 +128,7 @@ def main_loop():
 
         elif prompt == '4':
             # View the log.
-            log.display(pretty=True)
-            cf.press_enter_to_continue()
+            view_log(log, settings)
 
         elif prompt == '5':
             # Show the current progress towards a goal in a category.
