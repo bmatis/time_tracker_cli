@@ -8,6 +8,7 @@ class Settings():
         # Save file locations
         self.log_file = 'log.csv'
         self.categories_file = 'categories.json'
+        self.goals_file = 'goals.json'
 
         # Gets the saved category options.
         self.get_categories()

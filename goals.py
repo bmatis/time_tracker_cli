@@ -1,12 +1,50 @@
 from datetime import datetime, timedelta
 import common_functions as cf
+import json
+
 
 class Goals():
     """A class for defining and managing a goal."""
-    def __init__(self):
-        # Hardcoding some values for now. Will eventually read these from
-        # a save file.
-        self.target_time = timedelta(hours=100)
+    def __init__(self, settings):
+        # Get location of save file for the goals and then load the values.
+        self.goals_file = settings.goals_file
+        self.load_goals()
+
+    def load_goals(self):
+        """
+        Loads the goals from the save file.
+        """
+        try:
+            with open(self.goals_file) as f:
+                self.goals = json.load(f)
+        except FileNotFoundError:
+            self.goals = {}
+            self.save_goals()
+
+    def get_category_goal(self, category):
+        """
+        Gets a goal time for a given category.
+        """
+        try:
+            goal = timedelta(hours=self.goals[category])
+        except:
+            # If no goal value is set, set a default.
+            goal = timedelta(hours=1)
+        return goal
+
+    def set_category_goal(self, category, goal):
+        """
+        Sets a goal time for a given category.
+        """
+        self.goals[category] = int(goal)
+        self.save_goals()
+
+    def save_goals(self):
+        """
+        Saves the goals to a file.
+        """
+        with open(self.goals_file, 'w') as f:
+            json.dump(self.goals, f)
 
     def show_progress_bar(self, progress_percent, total_width=52):
         # Calculate the filled-in portion of the progress bar.
@@ -29,7 +67,7 @@ class Goals():
         its goal.
         """
         time_spent = log.get_category_time_sum(category)
-        goal_time = self.target_time
+        goal_time = self.get_category_goal(category)
         self.draw_progress_display(category, time_spent, goal_time)
 
     def show_percent_of_total(self, log, category):

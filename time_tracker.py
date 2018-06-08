@@ -8,11 +8,12 @@ from settings import Settings
 from goals import Goals
 import common_functions as cf
 
-def quit(log, settings):
+def quit(log, settings, goals):
     """Quit the program."""
 
     # Save categories to the file.
     settings.save_categories()
+    goals.save_goals()
 
     # Exit program.
     sys.exit()
@@ -119,7 +120,7 @@ def main_loop():
     # Create settings, log, and goal objects.
     settings = Settings()
     log = Log(settings)
-    goals = Goals()
+    goals = Goals(settings)
 
     # Manu menu options
     main_menu = [
@@ -130,6 +131,7 @@ def main_loop():
         "Show goal progress",
         "Status report",
         "Category breakdown",
+        "Set a goal",
         "Quit"]
 
     while True:
@@ -178,8 +180,18 @@ def main_loop():
             cf.press_enter_to_continue()
 
         elif prompt == '8':
+            # Set a goal.
+            print("\nSet a goal for which category?")
+            category = cf.select_category(settings)
+            if category:
+                print("How many hours? Please provide an integer value.")
+                hours = input("> ")
+                goals.set_category_goal(category, hours)
+                print("The %s category has now been set to a %s hour goal." % (category, hours))
+
+        elif prompt == '9':
             # Save and quit.
-            quit(log, settings)
+            quit(log, settings, goals)
 
         else:
             print("Invalid input. Please respond with a valid menu option.")
