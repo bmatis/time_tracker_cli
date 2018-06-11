@@ -50,6 +50,10 @@ def run_timer(log, settings, goals):
 
         # Show the current progress for the category.
         goals.show_detailed_progress(log, category)
+
+        # Check if the goal was completed and prompt for new goal if so.
+        if goals.check_for_goal_completion(log, category) == True:
+            goals.goal_completion(log, category)
         cf.press_enter_to_continue()
     else:
         print("Ok, timer cancelled.")
@@ -187,7 +191,8 @@ def main_loop():
                 print("How many hours? Please provide an integer value.")
                 hours = input("> ")
                 goals.set_category_goal(category, hours)
-                print("The %s category has now been set to a %s hour goal." % (category, hours))
+                print("The %s category has now been set to a %s hour goal." %
+                    (category, hours))
 
         elif prompt == '9':
             # Save and quit.

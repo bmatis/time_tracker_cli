@@ -109,3 +109,35 @@ class Goals():
         if time_minutes != 0:
             time_str += " " + str(time_minutes) + " minutes"
         return time_str
+
+    def check_for_goal_completion(self, log, category):
+        """
+        Check if goal was met for a given category.
+        """
+        goal_time = self.get_category_goal(category)
+        time_spent = log.get_category_time_sum(category)
+        if (time_spent > goal_time):
+            return True
+        else:
+            return False
+
+    def goal_completion(self, log, category):
+        """
+        Handle goal completion.
+        """
+        goal_time = self.get_category_goal(category)
+
+        print("\nCONGRATULATIONS!!!")
+        print("*" * 18)
+        print("You've hit your goal of %s spent on %s." %
+            (self.formatted_time(goal_time), category))
+        print("\nWould you like to provide a new goal? (y/n)")
+        prompt = input("> ")
+        if prompt == 'y':
+            print("How many hours? Please provide an integer value.")
+            hours = input("> ")
+            self.set_category_goal(category, hours)
+            print("The %s category has now been set to a %s hour goal." % (category, hours))
+            self.show_detailed_progress(log, category)
+        elif prompt == 'n':
+            pass

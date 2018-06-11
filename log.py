@@ -103,6 +103,11 @@ class Log():
 
             print("\nAdded " + str(duration) + " to category: " + category)
             goals.show_detailed_progress(self, category)
+
+            # Check if goal completed. If so, congratulate user and prompt for
+            # new goal.
+            if goals.check_for_goal_completion(self, category) == True:
+                goals.goal_completion(self, category)
         else:
             print("Ok, cancelling.")
 
