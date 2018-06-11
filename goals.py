@@ -137,7 +137,8 @@ class Goals():
             print("How many hours? Please provide an integer value.")
             hours = input("> ")
             self.set_category_goal(category, hours)
-            print("The %s category has now been set to a %s hour goal." % (category, hours))
+            print("The %s category has now been set to a %s hour goal." %
+                (category, hours))
             self.show_detailed_progress(log, category)
         elif prompt == 'n':
             pass
