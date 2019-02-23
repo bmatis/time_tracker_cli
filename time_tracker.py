@@ -6,6 +6,7 @@ from timer import Timer
 from log import Log
 from settings import Settings
 from goals import Goals
+from progress_bar import Progress_Bar
 import common_functions as cf
 
 def quit(log, settings, goals):
@@ -136,7 +137,8 @@ def main_loop():
         "Status report",
         "Category breakdown",
         "Set a goal",
-        "Quit"]
+        "Quit",
+        "TESTING: Generate Progress Bar"]
 
     while True:
         print()
@@ -197,6 +199,15 @@ def main_loop():
         elif prompt == '9':
             # Save and quit.
             quit(log, settings, goals)
+
+        elif prompt == '10':
+            # For testing the progress bar generation
+            progress_bar = Progress_Bar(width=52)
+            progress_bar.draw_full_progress_display(
+                "Programming - Level 2",
+                37,
+                "2 hours 15 minutes ",
+                "Level 3: 5 hours")
 
         else:
             print("Invalid input. Please respond with a valid menu option.")
