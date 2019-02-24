@@ -38,6 +38,17 @@ def convert_str_to_datetime(time_str):
         t = datetime.strptime(time_str, "%Y-%m-%d %H:%M:%S")
     return t
 
+def formatted_time(time):
+    """
+    Present a timedelta in the format of "X hours Y minutes"
+    """
+    time_hours = int(time.total_seconds() // 3600)
+    time_minutes = int(time.total_seconds() // 60 % 60)
+    time_str = str(time_hours) + " hours"
+    if time_minutes != 0:
+        time_str += " " + str(time_minutes) + " mins"
+    return time_str
+
 def press_enter_to_continue():
     """Wait for the user to press enter to continue and tell them this."""
     input("\nPress enter to continue...")

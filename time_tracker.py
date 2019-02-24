@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 import sys
+from datetime import datetime, timedelta
 
 from timer import Timer
 from log import Log
@@ -8,6 +9,8 @@ from settings import Settings
 from goals import Goals
 from progress_bar import Progress_Bar
 import common_functions as cf
+import levels as levels
+
 
 def quit(log, settings, goals):
     """Quit the program."""
@@ -117,6 +120,42 @@ def view_log(log, settings):
     else:
         return
 
+def view_level(log, settings):
+    # Ask user what category to use
+    print()
+    header = "Show level for which category?"
+    print(header + "\n" + "-" * len(header))
+    category = cf.select_category(settings, allow_all=False)
+
+    # if not category:
+    #     return
+
+    # Get the total time spent for the category
+    cat_time = log.get_category_time_sum(category)
+
+    # Convert total category time to an numeric value of hours, rounded
+    # to 2 decimal places (i.e. like 1.5 hours instead of 1:30:00)
+    cat_time_num = round(cat_time / timedelta (hours=1), 2)
+
+    # Get a friendly looking string value for the category time
+    cat_time_str = cf.formatted_time(cat_time)
+
+
+    cur_level = levels.get_level(cat_time_num)
+    next_level = levels.get_level(cat_time_num) + 1
+    percent = levels.level_progress_percent(cat_time_num)
+    cur_level_time = levels.time_per_level(cur_level)
+    next_level_time = levels.time_per_level(next_level)
+
+    main_label = category + " - Level " + str(cur_level) + " - " + cat_time_str
+    left_label = str(percent) + "% to next level"
+    right_label = "Level " + str(next_level) + " [" + str(next_level_time) + " Hours]"
+
+    pb = Progress_Bar(width=52)
+    pb.draw_full_progress_display(
+        main_label, percent, left_label, right_label)
+    cf.press_enter_to_continue()
+
 def main_loop():
     """Main application loop."""
 
@@ -137,8 +176,9 @@ def main_loop():
         "Status report",
         "Category breakdown",
         "Set a goal",
+        "See category levels",
         "Quit",
-        "TESTING: Generate Progress Bar"]
+        ]
 
     while True:
         print()
@@ -197,19 +237,14 @@ def main_loop():
                     (category, hours))
 
         elif prompt == '9':
+            # For testing the levels system
+            view_level(log, settings)
+
+        elif prompt == '10':
             # Save and quit.
             quit(log, settings, goals)
 
-        elif prompt == '10':
-            # For testing the progress bar generation
-            progress_bar = Progress_Bar(width=52)
-            progress_bar.draw_full_progress_display(
-                "Programming - Level 2",
-                37,
-                "2 hours 15 minutes ",
-                "Level 3: 5 hours")
-
         else:
-            print("Invalid input. Please respond with a valid menu option.")
+            print("\nInvalid input. Please respond with a valid menu option.")
 
 main_loop()

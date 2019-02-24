@@ -72,22 +72,25 @@ class Goals():
         except ZeroDivisionError:
             progress_percent = 0
 
-        time_spent_str = self.formatted_time(progress_time)
-        total_time_str = self.formatted_time(end_time)
+        time_spent_str = cf.formatted_time(progress_time)
+        total_time_str = cf.formatted_time(end_time)
+
+        main_label = category + ": %.2f%%" % progress_percent
 
         progress_bar = Progress_Bar()
-        progress_bar.draw_full_progress_display(category, progress_percent, time_spent_str, total_time_str)
+        progress_bar.draw_full_progress_display(
+            main_label, progress_percent, time_spent_str, total_time_str)
 
-    def formatted_time(self, time):
-        """
-        Present a timedelta in the format of "X hours Y minutes"
-        """
-        time_hours = int(time.total_seconds() // 3600)
-        time_minutes = int(time.total_seconds() // 60 % 60)
-        time_str = str(time_hours) + " hours"
-        if time_minutes != 0:
-            time_str += " " + str(time_minutes) + " minutes"
-        return time_str
+    # def formatted_time(self, time):
+    #     """
+    #     Present a timedelta in the format of "X hours Y minutes"
+    #     """
+    #     time_hours = int(time.total_seconds() // 3600)
+    #     time_minutes = int(time.total_seconds() // 60 % 60)
+    #     time_str = str(time_hours) + " hours"
+    #     if time_minutes != 0:
+    #         time_str += " " + str(time_minutes) + " minutes"
+    #     return time_str
 
     def check_for_goal_completion(self, log, category):
         """
@@ -109,7 +112,7 @@ class Goals():
         print("\nCONGRATULATIONS!!!")
         print("*" * 18)
         print("You've hit your goal of %s spent on %s." %
-            (self.formatted_time(goal_time), category))
+            (cf.formatted_time(goal_time), category))
         print("\nWould you like to provide a new goal? (y/n)")
         prompt = input("> ")
         if prompt == 'y':
